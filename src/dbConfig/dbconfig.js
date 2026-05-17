@@ -11,7 +11,8 @@ export async function connect() {
         })
 
         connection.on('error', (err) =>{
-            console.log('MOngoDB connection error, please make sure DB is up and running' + err)
+            console.log('MOngoDB connection error, please make sure DB is up and running' + err);
+            process.exit() 
         } )
 
     }
@@ -19,5 +20,4 @@ export async function connect() {
         console.log('Something Went Wrong in Connecting to DB');
         console.log(error);
     }
-    
 }

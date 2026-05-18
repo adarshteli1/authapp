@@ -1,20 +1,22 @@
-import { connect } from "@/dbConfig/dbconfig";
-import User from "@/models/UserModel"
-import { error } from "console";
-import { NextRequest,NextResponse } from "next/server"
-import bcryptjs from "bcryptjs"
-import { sendMail } from '@/helpers/mailer'
-import jwt from "jsonwebtoken"
-import { getDataFromToken } from "@/helpers/getFataFromToken";
+import { getDataFromToken } from "@/helpers/getDataFromToken";
 
-connect()
+import { NextRequest, NextResponse } from "next/server";
+import User from "@/models/userModel";
+import { connect } from "@/dbConfig/dbConfig";
 
-export async function GET(request: NextRequest){
-    const userid= await getDataFromToken(request)
-    const user= await User.findOne({_id:userid}).select("-password")
+connect();
 
-    return NextResponse.json({
-        message: "USer FOund",
-        data: user
-    })
+export async function GET(request:NextRequest){
+
+    try {
+        const userId = await getDataFromToken(request);
+        const user = await User.findOne({_id: userId}).select("-password");
+        return NextResponse.json({
+            mesaaage: "User found",
+            data: user
+        })
+    } catch (error:any) {
+        return NextResponse.json({error: error.message}, {status: 400});
+    }
+
 }
